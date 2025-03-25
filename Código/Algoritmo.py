@@ -39,9 +39,25 @@ def merge(left, right):
     return result
 
 
-# Divide um array em N partes aproximadamente iguais, de acordo com o número de CPUs disponíveis
-def dividir_array(arr, num_partes):
+def merge(left, right):
+    """Fusão (merge) de duas listas ordenadas."""
+    result = []
+    i = j = 0
 
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+# Divide um array em N partes aproximadamente iguais
+def dividir_array(arr, num_partes):
     tamanho = len(arr)
     chunk_size = tamanho // num_partes
     partes = [arr[i * chunk_size: (i + 1) * chunk_size] for i in range(num_partes)]
@@ -50,48 +66,50 @@ def dividir_array(arr, num_partes):
         partes[-1].extend(arr[num_partes * chunk_size:])
     return partes
 
-
-# Função auxiliar para realizar o merge de um par de listas.
 def merge_pair(pair):
-
+    """
+    Função auxiliar para realizar o merge de um par de listas.
+    Se a segunda lista estiver vazia (caso de número ímpar), retorna a primeira.
+    """
     left, right = pair
     if not right:
         return left
     return merge(left, right)
 
+def merge_paralelo(listas, pool):
+    """
+    Realiza a fusão (merge) paralela de uma lista de listas ordenadas.
+    Reutiliza o Pool passado como parâmetro.
+    """
+    while len(listas) > 1:
+        pares = []
+        # Agrupa as listas em pares; se o número for ímpar, o último par terá a segunda lista vazia
+        for i in range(0, len(listas), 2):
+            if i + 1 < len(listas):
+                pares.append((listas[i], listas[i+1]))
+            else:
+                pares.append((listas[i], []))
 
-# Realiza a fusão (merge) paralela de uma lista de listas ordenadas.
-def merge_paralelo(listas):
+        # Usa o mesmo pool para fazer merge dos pares
+        listas = pool.map(merge_pair, pares)
 
-    num_cpus = multiprocessing.cpu_count()
-    with Pool(processes=num_cpus) as pool:
-        while len(listas) > 1:
-            pares = []
-            # Agrupa as listas em pares; se o número for ímpar, o último par terá a segunda lista vazia
-            for i in range(0, len(listas), 2):
-                if i + 1 < len(listas):
-                    pares.append((listas[i], listas[i+1]))
-                else:
-                    pares.append((listas[i], []))
-            listas = pool.map(merge_pair, pares)
     return listas[0]
 
-def merge_sort_paralelo(arr):
+def merge_sort_paralelo(arr, pool):
     """
     Merge Sort paralelizado:
       1. Divide os dados em partes iguais, de acordo com o número total de CPUs.
-      2. Ordena cada parte em paralelo.
-      3. Utiliza a função merge_paralelo para combinar as partes ordenadas de forma paralela.
+      2. Ordena cada parte em paralelo (usando o Pool recebido como parâmetro).
+      3. Utiliza a função merge_paralelo (também usando o mesmo Pool) para combinar as partes ordenadas.
     """
-    num_cpus = multiprocessing.cpu_count()  # Obtém o número total de CPUs disponíveis
-    partes = dividir_array(arr, num_cpus)     # Divide os dados em partes iguais
+    num_cpus = multiprocessing.cpu_count()
+    partes = dividir_array(arr, num_cpus)
 
     # Ordena cada pedaço em paralelo utilizando o Pool
-    with Pool(processes=num_cpus) as pool:
-        partes_ordenadas = pool.map(mergeSort, partes)
+    partes_ordenadas = pool.map(mergeSort, partes)
 
-    # Utiliza a função merge_paralelo para juntar as partes ordenadas
-    lista_ordenada = merge_paralelo(partes_ordenadas)
+    # Fusão paralela, usando o mesmo pool
+    lista_ordenada = merge_paralelo(partes_ordenadas, pool)
     return lista_ordenada
 
 
@@ -134,7 +152,10 @@ if __name__ == "__main__":
 
     # Execução sequencial
     inicio_sequencial = time.perf_counter() * 1000
+
     mergeSort(dados)
+    mergeSort(dados)    
+
     fim_sequencial = time.perf_counter() * 1000
     
 
@@ -145,11 +166,11 @@ if __name__ == "__main__":
 
     inicio_paralelo = time.perf_counter() * 1000
 
-    p1 = Process(target=merge_sort_paralelo, args=(dados,))
-
-    p1.start()
-
-    p1.join()   
+    # Cria um Pool de processadores
+    with multiprocessing.Pool() as pool:
+        # Executa o merge sort paralelo usando o pool
+        merge_sort_paralelo(dados, pool)
+        merge_sort_paralelo(dados, pool)      
 
     fim_paralelo = time.perf_counter() * 1000
 
