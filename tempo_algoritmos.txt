@@ -1,0 +1,21 @@
+LISTA PEQUENA
+
+				tempo sequencial(ms)			tempo paralelo(ms)
+valores		
+100		   				0.255							89				
+500						1								85
+1000					3								134
+5000					19								149
+10000					43								156
+
+
+
+LISTA GRANDE
+
+				tempo sequencial(ms)		tempo paralelo(ms)		
+valores			
+100000					532								417
+200000					1188							750
+300000					1945							1185
+400000					2584							1496
+500000					3306							1859
