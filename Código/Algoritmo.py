@@ -4,7 +4,7 @@ import time
 import math
 from multiprocessing import Process, Pool
 
-# merge sequencial
+# Algoritmo merge sort sequencial
 def mergeSort(arr):
     
     if len(arr) <= 1:
@@ -20,9 +20,10 @@ def mergeSort(arr):
     return merge(sortedLeft, sortedRight)
 
 
+# Merge de duas listas ordenadas 
+  
 def merge(left, right):
 
-    # fusão (merge) de duas listas ordenadas.
     result = []
     i = j = 0
 
@@ -38,18 +39,8 @@ def merge(left, right):
     result.extend(right[j:])
     return result
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
-# Divide um array em N partes aproximadamente iguais, de acordo com o número de CPUs disponíveis
-=======
-# divide um array em N partes aproximadamente iguais
->>>>>>> Stashed changes
-=======
-# divide um array em N partes aproximadamente iguais
->>>>>>> Stashed changes
+# Divide um array em N partes aproximadamente iguais
 def dividir_array(arr, num_partes):
-
     tamanho = len(arr)
     chunk_size = tamanho // num_partes
     partes = [arr[i * chunk_size: (i + 1) * chunk_size] for i in range(num_partes)]
@@ -58,104 +49,48 @@ def dividir_array(arr, num_partes):
         partes[-1].extend(arr[num_partes * chunk_size:])
     return partes
 
-
-# Função auxiliar para realizar o merge de um par de listas.
 def merge_pair(pair):
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-    
-    # função auxiliar para realizar o merge de um par de listas.
-    # se a segunda lista estiver vazia (caso de número ímpar), retorna a primeira.
->>>>>>> Stashed changes
-=======
-    
-    # função auxiliar para realizar o merge de um par de listas.
-    # se a segunda lista estiver vazia (caso de número ímpar), retorna a primeira.
->>>>>>> Stashed changes
-
+    # Função auxiliar para realizar o merge de um par de listas.
+    # Se a segunda lista estiver vazia (caso de número ímpar), retorna a primeira.
+   
     left, right = pair
     if not right:
         return left
     return merge(left, right)
 
-<<<<<<< Updated upstream
-
-# Realiza a fusão (merge) paralela de uma lista de listas ordenadas.
-def merge_paralelo(listas):
-=======
 def merge_paralelo(listas, pool):
-    
-    #realiza a fusão (merge) paralela de uma lista de listas ordenadas.
-    #reutiliza o Pool passado como parâmetro.
-    
+    # Realiza a fusão (merge) paralela de uma lista de listas ordenadas.
+    # Reutiliza o Pool passado como parâmetro.
+
     while len(listas) > 1:
         pares = []
-        # agrupa as listas em pares; se o número for ímpar, o último par terá a segunda lista vazia
+        # Agrupa as listas em pares; se o número for ímpar, o último par terá a segunda lista vazia
         for i in range(0, len(listas), 2):
             if i + 1 < len(listas):
                 pares.append((listas[i], listas[i+1]))
             else:
                 pares.append((listas[i], []))
 
-        # usa o mesmo pool para fazer merge dos pares
+        # Usa o mesmo pool para fazer merge dos pares
         listas = pool.map(merge_pair, pares)
->>>>>>> Stashed changes
 
-    num_cpus = multiprocessing.cpu_count()
-    with Pool(processes=num_cpus) as pool:
-        while len(listas) > 1:
-            pares = []
-            # Agrupa as listas em pares; se o número for ímpar, o último par terá a segunda lista vazia
-            for i in range(0, len(listas), 2):
-                if i + 1 < len(listas):
-                    pares.append((listas[i], listas[i+1]))
-                else:
-                    pares.append((listas[i], []))
-            listas = pool.map(merge_pair, pares)
     return listas[0]
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-def merge_sort_paralelo(arr):
-    """
-    Merge Sort paralelizado:
-      1. Divide os dados em partes iguais, de acordo com o número total de CPUs.
-      2. Ordena cada parte em paralelo.
-      3. Utiliza a função merge_paralelo para combinar as partes ordenadas de forma paralela.
-    """
-    num_cpus = multiprocessing.cpu_count()  # Obtém o número total de CPUs disponíveis
-    partes = dividir_array(arr, num_cpus)     # Divide os dados em partes iguais
-
-    # Ordena cada pedaço em paralelo utilizando o Pool
-    with Pool(processes=num_cpus) as pool:
-        partes_ordenadas = pool.map(mergeSort, partes)
-
-    # Utiliza a função merge_paralelo para juntar as partes ordenadas
-    lista_ordenada = merge_paralelo(partes_ordenadas)
-=======
-=======
->>>>>>> Stashed changes
 def merge_sort_paralelo(arr, pool):
-    
-    # merge Sort paralelizado:
-    #  1. divide os dados em partes iguais, de acordo com o número total de CPUs.
-    #  2. ordena cada parte em paralelo (usando o Pool recebido como parâmetro).
-    #  3. utiliza a função merge_paralelo (também usando o mesmo Pool) para combinar as partes ordenadas.
-    
+
+    # Merge Sort paralelizado:
+      # 1. Divide os dados em partes iguais, de acordo com o número total de CPUs.
+      # 2. Ordena cada parte em paralelo (usando o Pool recebido como parâmetro).
+      # 3. Utiliza a função merge_paralelo (também usando o mesmo Pool) para combinar as partes ordenadas.
+
     num_cpus = multiprocessing.cpu_count()
     partes = dividir_array(arr, num_cpus)
 
-    # ordena cada pedaço em paralelo utilizando o Pool
+    # Ordena cada pedaço em paralelo utilizando o Pool
     partes_ordenadas = pool.map(mergeSort, partes)
 
-    
-    # fusão paralela, usando o mesmo pool
-    lista_ordenada = merge_paralelo(partes_ordenadas, pool) 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    # Fusão paralela, usando o mesmo pool
+    lista_ordenada = merge_paralelo(partes_ordenadas, pool)
     return lista_ordenada
 
 
@@ -167,7 +102,6 @@ if __name__ == "__main__":
     dados = []
 
     try:
-
 
         diretorio = ["C:/Users/Lucas/Documents/estudos/Trabalho-SO/listas_grandes", "C:/Users/Lucas/Documents/estudos/Trabalho-SO/listas_pequenas"]
 
@@ -197,57 +131,33 @@ if __name__ == "__main__":
 
     
 
-    # execução sequencial
+    # Execução sequencial
     inicio_sequencial = time.perf_counter() * 1000
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
     mergeSort(dados)
-=======
-=======
 
-    mergeSort(dados.copy())
->>>>>>> Stashed changes
-
-    mergeSort(dados.copy())
-
->>>>>>> Stashed changes
     fim_sequencial = time.perf_counter() * 1000
     
 
     tempo_sequencial = fim_sequencial - inicio_sequencial
 
 
-    # execução paralela
+    # Execução paralela
 
     inicio_paralelo = time.perf_counter() * 1000
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    p1 = Process(target=merge_sort_paralelo, args=(dados,))
-
-    p1.start()
-
-    p1.join()   
-=======
-=======
->>>>>>> Stashed changes
-    # cria um Pool de processadores
-    with multiprocessing.Pool(processes= multiprocessing.cpu_count()) as pool:
-        # executa o merge sort paralelo usando o pool
-        merge_sort_paralelo(dados.copy(), pool)    
-
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    # Cria um Pool de processadores
+    with multiprocessing.Pool() as pool:
+        # Executa o merge sort paralelo usando o pool
+        merge_sort_paralelo(dados, pool)
+      
 
     fim_paralelo = time.perf_counter() * 1000
 
 
     tempo_paralelo = fim_paralelo - inicio_paralelo
 
-
-    #resultados
+    #Resultados
 
     diferenca = tempo_sequencial - tempo_paralelo
 
@@ -268,3 +178,4 @@ if __name__ == "__main__":
         print(f"Diferença: {diferenca:.3f} milissegundos a favor do paralelismo")
     else:
         print(f"Diferença: {int(diferenca)} milissegundos a favor do paralelismo")
+
