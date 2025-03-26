@@ -18,4 +18,7 @@ ax.set_title("Comparação de Tempos de Execução (ms)\nMerge Sort Sequencial v
 ax.set_ylabel("Tempo (ms)")
 
 plt.show()
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

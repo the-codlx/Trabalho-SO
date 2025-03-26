@@ -39,8 +39,12 @@ def merge(left, right):
     return result
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 # Divide um array em N partes aproximadamente iguais, de acordo com o número de CPUs disponíveis
+=======
+# divide um array em N partes aproximadamente iguais
+>>>>>>> Stashed changes
 =======
 # divide um array em N partes aproximadamente iguais
 >>>>>>> Stashed changes
@@ -58,6 +62,12 @@ def dividir_array(arr, num_partes):
 # Função auxiliar para realizar o merge de um par de listas.
 def merge_pair(pair):
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    
+    # função auxiliar para realizar o merge de um par de listas.
+    # se a segunda lista estiver vazia (caso de número ímpar), retorna a primeira.
+>>>>>>> Stashed changes
 =======
     
     # função auxiliar para realizar o merge de um par de listas.
@@ -106,6 +116,7 @@ def merge_paralelo(listas, pool):
     return listas[0]
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 def merge_sort_paralelo(arr):
     """
     Merge Sort paralelizado:
@@ -123,6 +134,8 @@ def merge_sort_paralelo(arr):
     # Utiliza a função merge_paralelo para juntar as partes ordenadas
     lista_ordenada = merge_paralelo(partes_ordenadas)
 =======
+=======
+>>>>>>> Stashed changes
 def merge_sort_paralelo(arr, pool):
     
     # merge Sort paralelizado:
@@ -139,6 +152,9 @@ def merge_sort_paralelo(arr, pool):
     
     # fusão paralela, usando o mesmo pool
     lista_ordenada = merge_paralelo(partes_ordenadas, pool) 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     return lista_ordenada
 
@@ -184,8 +200,13 @@ if __name__ == "__main__":
     # execução sequencial
     inicio_sequencial = time.perf_counter() * 1000
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     mergeSort(dados)
 =======
+=======
+
+    mergeSort(dados.copy())
+>>>>>>> Stashed changes
 
     mergeSort(dados.copy())
 
@@ -201,17 +222,23 @@ if __name__ == "__main__":
     inicio_paralelo = time.perf_counter() * 1000
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     p1 = Process(target=merge_sort_paralelo, args=(dados,))
 
     p1.start()
 
     p1.join()   
 =======
+=======
+>>>>>>> Stashed changes
     # cria um Pool de processadores
     with multiprocessing.Pool(processes= multiprocessing.cpu_count()) as pool:
         # executa o merge sort paralelo usando o pool
         merge_sort_paralelo(dados.copy(), pool)    
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     fim_paralelo = time.perf_counter() * 1000
